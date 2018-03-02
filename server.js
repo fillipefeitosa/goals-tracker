@@ -1,4 +1,4 @@
-console.log('Monkey Says: Hello There. Lets build a Express API.Nath é incrível namorada ');
+console.log('Monkey Says: Hello There. Lets build a Express API. Im hungry.');
 
 // Server JS - Express APP
 // Used to create a small goals app
@@ -35,6 +35,18 @@ app.get('/goals', function(req, res){
 	}).exec(function(err, goals){
 		if(err) res.send(err);
 		res.json(goals);
+	});
+});
+
+app.post('/goals', function(req, res){
+	var goal = {
+		description : req.body.description,
+	};
+	db.insert(goal, function(err, newGoal){
+		if(err) console.log(err);
+		var str = JSON.stringify(req.body);
+		console.log('This is Req.Body: '+str);
+		res.json(goal);
 	});
 });
 
