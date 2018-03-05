@@ -29,6 +29,7 @@ var db = new Datastore({
 
 // CRUD and API Operations
 
+// Get all goals
 app.get('/goals', function(req, res){
 	db.find({}).sort({
 		updatedAt: -1
@@ -38,6 +39,20 @@ app.get('/goals', function(req, res){
 	});
 });
 
+// Get a Post via ID
+app.get('/goals/:id', function(req, res){
+	var goalId = req.params.id;
+	db.findOne({
+		_id: goalId,
+	}, {}, function(err, goal){
+		if(err) res.send(err);
+		res.json(goal);
+	});
+	
+
+});
+
+// Add a Goal via POST
 app.post('/goals', function(req, res){
 	var goal = {
 		description : req.body.description,
@@ -48,6 +63,18 @@ app.post('/goals', function(req, res){
 		console.log('This is Req.Body: '+str);
 		res.json(goal);
 	});
+});
+
+// Delete a Post
+app.delete('/goals/:id', function(req, res){
+	var goalId = req.params.id;
+	db.remove({
+		_id: goalId
+	}, {}, function(err, goal){
+		if(err) console.log(err);
+		res.sendStatus(200);
+	});
+
 });
 
 // Routes
